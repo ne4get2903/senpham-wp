@@ -28,6 +28,7 @@ define('DB_USER', 'root');
 /** MySQL database password */
 define('DB_PASSWORD', '');
 
+
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
 
@@ -46,6 +47,7 @@ define('DB_COLLATE', '');
  *
  * @since 2.6.0
  */
+
 define('AUTH_KEY',         'Z/.&F+j6KjyWO`nUb}]fco`6l#UuOo8?=rO,5N8WBr>l>-&?_el?%mo(_*S^(&W@');
 define('SECURE_AUTH_KEY',  '6Zl8Qtq3N)_S.NR92ZT>-g[AKViFCQqjnOfqr_nRfw-j0tv/AfdL^rtq&:bA$w4x');
 define('LOGGED_IN_KEY',    'q/hs]:F>6Zj>EVYN#sN4{uG^&N9W%a2@<zH0y*x}-X=1(Csw$n04xId02z^0c#w@');
@@ -79,6 +81,7 @@ $table_prefix  = 'wp_';
  */
 define('WP_DEBUG', true);
 
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
@@ -87,4 +90,3 @@ if ( !defined('ABSPATH') )
 
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');
-

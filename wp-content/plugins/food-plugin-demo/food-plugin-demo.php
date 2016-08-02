@@ -1,6 +1,7 @@
 <?php
 /**
 * Plugin Name: Food Plugin Demo
+<<<<<<< HEAD
 * Plugin URI:
 * Description: A brief description about your plugin.
 * Version: 1.0 or whatever version of the plugin (pretty self explanatory)
@@ -8,8 +9,8 @@
 * Author URI:
 * License: A "Slug" license name e.g. GPL12
 */
-if(!class_exists('Food_Plugin_Demo')){
-    class Food_Plugin_Demo{
+if(!class_exists('Food_Plugin_Demo')) {
+    class Food_Plugin_Demo {
         function __construct(){
             add_action('init','create_post_type');
             add_action('add_meta_boxes','register_meta_boxes');
@@ -20,13 +21,61 @@ if(!class_exists('Food_Plugin_Demo')){
         }
     }
 }
-function fpd_load(){
-    global $fpd;
-    $fpd = new Food_Plugin_Demo();
+if( !class_exists('Food_Widget')) {
+    class Food_Widget extends WP_Widget {
+        function __construct( ) {
+            parent::__construct(
+                'food_widget', //id
+                'Food Widget Demo', //name
+                array(
+                    'description' => 'THis is widget demo'
+                    )
+                );
+        }
+        function form( $instance ) {
+            parent::form( $instance );
+            $default = array(
+                'title' => 'Your name',
+                'post_number' => 10
+                );
+            $instance = wp_parse_args( (array) $instance, $default );
+            $title = esc_attr( $instance['title']);
+            $post_number = esc_attr( $instance['post_number']);
+            echo "Nhập tiêu đề <input class='widefat' type='text' name='".$this->get_field_name("title")."'' value='".$title."' />";
+            echo "So luong bai hien thi <input class='widefat' type='text' name='".$this->get_field_name("post_number")."' value='".$post_number."' />";
+        }
+        function update(  $new_instance, $old_instance ) {
+            $instance = $old_instance;
+            $instance['title'] = strip_tags( $new_instance['title'] );
+            $instance['post_number'] = strip_tags( $new_instance['post_number'] );
+            return $instance;
+        }
+        function widget( $args, $instance ) {
+            extract($args);
+            $title = apply_filters( 'widget_title', $instance['title'] );
+            $post_number= $instance['post_number'];
+            echo $before_widget;
+            echo $before_title.$title.$after_title;
+            $random_query = new WP_Query('posts_per_page='.$post_number.'&orderby=rand');
+            if($random_query->have_posts()) :
+                echo "<ol>";
+            while( $random_query->have_posts() ) :
+                $random_query->the_post();
+                echo "<li><a href='".get_the_permalink()."' title='".get_the_title()."' > ".get_the_title()."</a></li>";
+            endwhile;
+            echo "</ol>";
+            endif;
+            echo $after_widget;
+        }
+    }
+}
+function fpd_load() {
+	global $fpd;
+	$fpd = new Food_Plugin_Demo();
 }
 add_action('plugins_loaded','fpd_load');
 
-function create_post_type(){
+function create_post_type() {
     register_post_type('fpd-food',
         array(
             'labels' => array(
@@ -43,11 +92,11 @@ function create_post_type(){
             'has_archive' => true,
             //'publicly_queryable' => true,
             'capability_type' => 'post',
-            'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments','post-formats' )
+            'supports'           => array( 'title', 'editor', 'thumbnail','post-formats' )//array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments','post-formats' )
             ));
 }
 
-function register_meta_boxes(){
+function register_meta_boxes() {
     add_meta_box('food_detail','Food Detail', 'output_meta_box','fpd-food','normal','high');
 }
 /*function get_custom_post_type($query){
@@ -57,10 +106,10 @@ function register_meta_boxes(){
 /*function add_img1_button(){
     echo '<a href = "#" id="img1" class="button">Add Img 1</a>';
 }*/
-function include_media_button_js_file(){
+function include_media_button_js_file() {
     wp_enqueue_script('media_button',plugin_dir_url('food-plugin-demo/js/media_button.js').'media_button.js',array('jquery'), '1.0', true);
 }
-function output_meta_box($post, $metabox){
+function output_meta_box( $post,  $metabox ) {
     //wp_editor($post->post_content,'post_content',array('name'=>'post_content'));
     $html = '';
     $html .= '<a href = "#" id="img1" class="button" >Add Img 1</a>
@@ -106,7 +155,7 @@ function output_meta_box($post, $metabox){
     <td><input type="text" name="amount"></td>
     <td><a class="button deleteIn">X</a></td>
     </tr>';
-    for($i= 0; $i<$count; $i++){
+    for($i= 0; $i<$count; $i++) {
         $html .= '<tr>
         <td>'.($i+1).'</td>
         <td><input type="text" name="nameIn'.($i+1).'" value="'.$nameIn[$i].'"></td>
@@ -121,7 +170,7 @@ function output_meta_box($post, $metabox){
     </div>';
     echo $html;
 }
-function fpd_save_food_meta($postID){
+function fpd_save_food_meta( $postID ) {
     $metaKey = array();
     $metaKey['img1'] = 'img1';
     $metaKey['img2'] = 'img2';
@@ -141,8 +190,8 @@ function fpd_save_food_meta($postID){
     $count = ( isset( $_POST['countIn'] ) ? sanitize_text_field( $_POST['countIn'] ) : 0 );
     if($count != 0){
         $index = 0;
-        for($i =0; $i < $count; $i++){
-            if(!empty( $_POST['nameIn'.($i+1)] )){
+        for($i =0; $i < $count; $i++) {
+            if(!empty( $_POST['nameIn'.($i+1)] )) {
                     $nameIn[$index] = sanitize_text_field( $_POST['nameIn'.($i+1)] );
                     $amountIn[$index] = sanitize_text_field( $_POST['amount'.($i+1)] );
                     $index = $index+1;
@@ -151,10 +200,17 @@ function fpd_save_food_meta($postID){
     }
     $data['name_ingredient'] = $nameIn;
     $data['amount_ingredient'] = $amountIn;
-
-    fpd_save_meta_data($postID, $metaKey, $data);
+    fpd_save_meta_data( $postID, $metaKey, $data );
 }
-function fpd_save_meta_data($postID, $metaKey, $newMetaValue){
+
+/*function get_custom_post_type($query){
+	if(is_home() && $query->is_main_query()) $query->set('post_type', array('post','fpd-food'));
+	return $query;
+}*/
+/*function add_img1_button(){
+	echo '<a href = "#" id="img1" class="button">Add Img 1</a>';
+}*/
+function fpd_save_meta_data( $postID, $metaKey, $newMetaValue ) {
     /* Get the meta value of the custom field key. */
     foreach($metaKey as $key=>$value){
         $metaValue = get_post_meta( $postID, $value, true );
@@ -175,14 +231,21 @@ function fpd_save_meta_data($postID, $metaKey, $newMetaValue){
     }
 }
 
-function fpd_move_food_detail(){
+function fpd_move_food_detail() {
     global $post, $wp_meta_boxes;
     do_meta_boxes(get_current_screen(),'normal',$post);
     unset($wp_meta_boxes['fpd-food']['normal']);
 }
-add_action('edit_form_after_title','fpd_move_food_detail');
+add_action('edit_form_after_title', 'fpd_move_food_detail');
 
+add_action('wp_dashboard_setup', 'fpd_create_admin_widget_notice');
+function fpd_create_admin_widget_notice() {
+    wp_add_dashboard_widget( 'fpd_notice', 'Ghi chu nhac nho', 'fpd_create_admin_widget_notice_callback');
+}
+function fpd_create_admin_widget_notice_callback(){
+    echo "a";
+}
 add_action( 'widgets_init', 'create_food_widget' );
-function create_thachpham_widget() {
-        register_widget('Thachpham_Widget');
+function create_food_widget(){
+    register_widget('Food_Widget');
 }

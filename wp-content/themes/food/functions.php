@@ -95,11 +95,11 @@ if(!function_exists('food_entry_header')){
         if(is_single()):
             //$html = .the_permalink();
             echo '<h1 class="entry_title">
-            <a href="'.get_edit_post_link().'">'.get_the_title().'</a>
+            <a href="'.get_the_permalink().'">'.get_the_title().'</a>
             </h1>';
         else:
             echo '<h2 class="entry_title">
-            <a href="'.get_edit_post_link().'">'.get_the_title().'</a>
+            <a href="'.get_the_permalink().'">'.get_the_title().'</a>
             </h2>';
         endif;
     }
@@ -140,7 +140,13 @@ if(!function_exists('food_entry_content')){
     function food_entry_content(){
         if(!is_single()): the_excerpt();
         else:
+
             the_content();
+            $arr = get_post_meta(get_the_ID());
+            echo the_post_thumbnail();
+            echo '<img src="'.$arr['img1'][0].'">';
+            echo '<img src="'.$arr['img2'][0].'">';
+            echo '<img src="'.$arr['img3'][0].'">';
         $link_pages = array(
         'before' => __('<p>Page:', 'food'),
         'after' => '</p>',
@@ -151,3 +157,4 @@ if(!function_exists('food_entry_content')){
       endif;
     }
 }
+

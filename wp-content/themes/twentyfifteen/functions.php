@@ -367,3 +367,14 @@ require get_template_directory() . '/inc/template-tags.php';
  * @since Twenty Fifteen 1.0
  */
 require get_template_directory() . '/inc/customizer.php';
+
+register_sidebar(array(
+    'name' => 'Block after content',
+    'id' => 'block-after-content',
+    'description' => 'Khu vuc sidebar hien thi duoi moi bai viet',
+    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+    'after_widget' => '</aside>',
+    'before_title' => '<h1 class="widget-title">',
+    'after_title' => '</h1>',
+    ));
+

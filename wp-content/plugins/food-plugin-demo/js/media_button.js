@@ -1,3 +1,4 @@
+
 jQuery(function($){
     $(document).ready(function(){
         $(".ingredient tbody ").sortable({
@@ -76,5 +77,4 @@ jQuery(function($){
         });
         window.open();
     }
-
 })

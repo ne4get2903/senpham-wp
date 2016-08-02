@@ -24,6 +24,12 @@
 			?>
 			<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'twentyfifteen' ) ); ?>"><?php printf( __( 'Proudly powered by %s', 'twentyfifteen' ), 'WordPress' ); ?></a>
 		</div><!-- .site-info -->
+        <?php if ( is_active_sidebar( 'block-after-content' )) : ?>
+            <div id="widget-area" class="widget-area" role="complementary">
+                <?php dynamic_sidebar( 'block-after-content' ); ?>
+
+            </div><!-- .widget-area -->
+        <?php endif; ?>
 	</footer><!-- .site-footer -->
 
 </div><!-- .site -->
